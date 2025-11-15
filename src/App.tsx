@@ -5,7 +5,6 @@ import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import BookingPage from './pages/public/BookingPage';
-import PatientDemoPage from './pages/public/PatientDemoPage';
 import BookingWizard from './pages/public/BookingWizard';
 import DashboardLayout from './layouts/DashboardLayout';
 import DashboardHome from './pages/dashboard/DashboardHome';

@@ -1,5 +1,5 @@
-import { Dentist, Patient, Appointment, Service, User } from '@/types';
-import { addDays, addHours, setHours, setMinutes } from 'date-fns';
+import { Dentist, Patient, Appointment, User } from '@/types';
+import { addDays, setHours, setMinutes } from 'date-fns';
 
 // Demo Dentist Data
 export const demoDentist: Dentist = {

@@ -97,7 +97,7 @@ export const api = {
     return patients.find(p => p.id === id) || null;
   },
 
-  createPatient: async (patient: Omit<Patient, 'id' | 'createdAt' | 'appointments'>): Promise<Patient> => {
+  createPatient: async (patient: Omit<Patient, 'id' | 'createdAt' | 'appointments'>, dentistId: string): Promise<Patient> => {
     await delay(300);
     const newPatient: Patient = {
       ...patient,
@@ -106,9 +106,9 @@ export const api = {
       appointments: [],
     };
     
-    const patients = await api.getPatients(patient.id); // This will need dentistId
+    const patients = await api.getPatients(dentistId);
     patients.push(newPatient);
-    storage.setItem(`patients_${patient.id}`, patients);
+    storage.setItem(`patients_${dentistId}`, patients);
     
     return newPatient;
   },

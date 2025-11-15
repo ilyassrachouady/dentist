@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale/fr';
 import { api } from '@/lib/api';
-import { Dentist, Service } from '@/types';
+import { Dentist } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,9 +25,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { Calendar as CalendarIcon, Clock, MapPin, Phone, Mail, CheckCircle2 } from 'lucide-react';
+import { Clock, MapPin, Phone, Mail, CheckCircle2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function BookingPage() {

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { api } from '@/lib/api';
-import { Patient, Appointment } from '@/types';
+import { Patient } from '@/types';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale/fr';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -27,7 +27,6 @@ import {
   Phone,
   Mail,
   Calendar,
-  FileText,
   Edit,
   Save,
   X,

@@ -31,7 +31,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Calendar } from '@/components/ui/calendar';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AddAppointmentForm } from '@/components/AddAppointmentForm';
 import { toast } from 'sonner';
 import { Plus, Calendar as CalendarIcon, Clock, Filter, List, CalendarDays } from 'lucide-react';

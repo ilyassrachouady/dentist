@@ -8,16 +8,25 @@ import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+
+// Custom French locale with Monday as the first day of the week
+const frLocale = {
+  ...fr,
+  options: {
+    ...fr.options,
+    weekStartsOn: 1 as const,
+  },
+};
 
 export interface CalendarSchedulerProps {
   timeSlots?: string[];
   onConfirm?: (value: { date?: Date; time?: string }) => void;
   onDateChange?: (date: Date | undefined) => void;
   disabledDates?: (date: Date) => boolean;
+  availableDates?: Date[];
+  unavailableDates?: Date[];
 }
 
 function CalendarScheduler({
@@ -36,6 +45,8 @@ function CalendarScheduler({
   onConfirm,
   onDateChange,
   disabledDates,
+  availableDates = [],
+  unavailableDates = [],
 }: CalendarSchedulerProps) {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const [time, setTime] = React.useState<string | undefined>();
@@ -57,7 +68,15 @@ function CalendarScheduler({
               selected={date}
               onSelect={handleDateSelect}
               disabled={disabledDates}
-              locale={fr}
+              locale={frLocale}
+              modifiers={{
+                available: availableDates,
+                unavailable: unavailableDates,
+              }}
+              modifiersClassNames={{
+                available: "bg-green-200 text-green-800 rounded-full",
+                unavailable: "bg-red-200 text-red-800 rounded-full",
+              }}
             />
           </div>
 
@@ -79,8 +98,8 @@ function CalendarScheduler({
                     size="default"
                     className={cn(
                       "w-full h-12 text-base font-medium transition-all duration-200",
-                      time === slot 
-                        ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md ring-2 ring-blue-500 ring-offset-2" 
+                      time === slot
+                        ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md ring-2 ring-blue-500 ring-offset-2"
                         : "border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 text-gray-700 hover:text-blue-700"
                     )}
                     onClick={() => setTime(slot)}
