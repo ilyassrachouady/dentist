@@ -83,6 +83,8 @@ export default function BookingWizard() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
   const [dateAvailability, setDateAvailability] = useState<Map<string, { total: number; remaining: number }>>(new Map());
+  const [availableDates, setAvailableDates] = useState<Date[]>([]);
+  const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isCheckingSlot, setIsCheckingSlot] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -135,15 +137,16 @@ export default function BookingWizard() {
 
   const loadMonthAvailability = async () => {
     if (!dentist || !booking.service) return;
-    
-    // Load availability for next 30 days
+
     const today = new Date();
     const availabilityMap = new Map<string, { total: number; remaining: number }>();
-    
+    const newAvailableDates: Date[] = [];
+    const newUnavailableDates: Date[] = [];
+
     for (let i = 0; i < 30; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
-      
+
       try {
         const slots = await api.getAvailableSlots(dentist.id, date);
         const timeSlots: TimeSlot[] = slots.map(time => {
@@ -151,17 +154,26 @@ export default function BookingWizard() {
           const remaining = Math.floor(Math.random() * capacity) + 1;
           return { time, capacity, remaining, isAvailable: remaining > 0 };
         });
-        
+
         const totalCapacity = timeSlots.reduce((sum, slot) => sum + slot.capacity, 0);
         const totalRemaining = timeSlots.reduce((sum, slot) => sum + slot.remaining, 0);
         const dateStr = format(date, 'yyyy-MM-dd');
         availabilityMap.set(dateStr, { total: totalCapacity, remaining: totalRemaining });
+
+        if (totalRemaining > 0) {
+          newAvailableDates.push(date);
+        } else {
+          newUnavailableDates.push(date);
+        }
       } catch (error) {
-        // Skip on error
+        // Skip on error and consider the date unavailable
+        newUnavailableDates.push(date);
       }
     }
-    
+
     setDateAvailability(availabilityMap);
+    setAvailableDates(newAvailableDates);
+    setUnavailableDates(newUnavailableDates);
   };
 
   const loadTimeSlots = async () => {
@@ -466,6 +478,8 @@ export default function BookingWizard() {
                       <CalendarScheduler
                         timeSlots={availableSlots.length > 0 ? availableSlots.map(s => formatTime12h(s.time)) : []}
                         disabledDates={(date) => date < new Date()}
+                        availableDates={availableDates}
+                        unavailableDates={unavailableDates}
                         onDateChange={(date) => {
                           handleDateSelect(date);
                           if (date) {
